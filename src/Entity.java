@@ -1,6 +1,9 @@
-import com.sun.xml.internal.ws.api.streaming.XMLStreamWriterFactory;
+
 
 /**
+ *
+ *
+ *
  * Created by rohan on 3/25/2017.
  */
 public class Entity {
@@ -11,14 +14,15 @@ public class Entity {
     protected int x;
     protected int y;
 
-    public Entity() {
-        this(0,0 );
-    }
-
     public Entity(int x, int y){
         this.x = x;
         this.y = y;
     }
+
+    public Entity() {
+        this(0,0);
+    }
+
     public char getType(){
         return type;
     }
@@ -28,10 +32,10 @@ public class Entity {
     public int getY(){
         return y;
     }
-    public int[] Coord(){
+    /**public int[] Coord(){
         int[] coord = {x,y};
         return coord;
-    }
+    }*/
     public void setHP(int Hp){
         this.HP = Hp;
     }

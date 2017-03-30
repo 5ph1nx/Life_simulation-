@@ -8,14 +8,11 @@ import java.util.Random;
  */
 public class Herbivore extends Entity {
    private final int maxGrowth = 8;
-
-
     public Herbivore() {
         super();
-        type = '@';
+        this.type = '@';
     }
     public Herbivore reproduce(){
-        // TODO: implement the condition for the energy level
         return new Herbivore();
     }
     public Cornivore attact(Cornivore prey){

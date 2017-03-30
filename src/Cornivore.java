@@ -5,8 +5,7 @@ public class Cornivore extends Entity {
 
     public Cornivore() {
         super();
-
-
+        this.type = '&';
     }
 
 }

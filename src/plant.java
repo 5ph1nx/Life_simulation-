@@ -5,7 +5,7 @@
 public class plant extends Entity{
     public plant() {
         super();
-         type = '*';
+        this.type = '*';
     }
 
 
