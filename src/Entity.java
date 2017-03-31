@@ -6,7 +6,7 @@
  *
  * Created by rohan on 3/25/2017.
  */
-public class Entity {
+public abstract class Entity {
 
     protected int HP = 3;//Initial HP points
     protected int HPLimit = 6;//Animals will not eat if limit is reached

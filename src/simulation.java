@@ -1,6 +1,4 @@
-import javafx.scene.control.RadioMenuItem;
 
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -33,13 +31,7 @@ public class simulation {
         System.out.println(H[0]);
         System.out.println(H[0]);
         */
-       Entity[][] earth2 = new Entity[2][2];
-       earth2[0][0] = new Herbivore();
-       earth2[0][1] = new plant();
-       earth2[1][0] = new Cornivore();
-       System.out.println(earth2[0][0].getType());
-       System.out.println(earth2[0][1].getType());
-       System.out.println(earth2[1][0].getType());
+
 
        World Earth = new World(5);
        Earth.display_Grid();
@@ -54,19 +46,13 @@ public class simulation {
         }
 
 
-
-
-
-
-
   public static  int generateIndex(){
       Random rando = new Random();
       return rando.nextInt(5);
   }
 
 
-  public static void MakeGrid(char[][] G, int size,
-                              char Plant, char Nothing){
+  public static void MakeGrid(char[][] G, int size, char Plant, char Nothing){
 
       for (int i = 0; i <5; i++) {
           for (int j = 0; j < 5 ; j++) {
