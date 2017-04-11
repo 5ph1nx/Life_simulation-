@@ -39,10 +39,7 @@ public abstract class Entity {
     public void setHP(int Hp){
         this.HP = Hp;
     }
-    public void  move(int st){
-        //TODO move will calculate how much the object will step in the 2D Grid
 
-    }
 
 
 

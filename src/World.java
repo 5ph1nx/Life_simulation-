@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -36,13 +35,11 @@ public class World {
         }
     }
     private void FillGridWithPlants(int square_size2) {
-
         int i;
         for (i = 0; i < square_size2; i++) {
             for (int j = 0; j < square_size2; j++) {
-                if (Grid[i][j] == null) {
+                if (Grid[i][j] == null)
                     Grid[i][j] = new Nothing();
-                }
             }
         }
     }
@@ -50,11 +47,20 @@ public class World {
     //public Entity DisplayEntityAtLocation(int x,int y){}
     public void Simulate(){
         //TODO: This is where everthing will happen.
-        for (int i = 0; i < size ; i++) {
-            for (int j = 0; j < size ; j++) {
-                //TODO: FIX THIS ISSUE NOW OR LATER Grid[i][j].move();
-            }
+        int i;
+        int j;
+        for (i = 0; i < size ; i++) {
+            for (j = 0; j < size ; j++) {
+                //TODO: how will this work
+                //TODO: WHENEVER I MOVE I NEED TO REPLACE THE SPACE WITH NOTHING
+                if((Grid[i][j].getType() == '@') || (Grid[i][j].getType()== '&')){
+                    move(i,j);
+                }
 
+            }
+            System.out.println("outter thisplay");
+            display_Grid();
+            System.out.println("");
         }
     }
 
@@ -78,87 +84,106 @@ public class World {
     }//Display a snapshot of the Grid
     private char Direction(){
         char [] possible_moves = {'u','d','r','l'};
-        return possible_moves[generateIndex(4)];
+        return possible_moves[generateIndex(size-1)];
     }
     public void move(int i, int j){
+        char D = Direction();
+        //System.out.println(D);
+        //System.out.printf("x: %d , y: %d%n", i,j);
 
-        switch (Direction()){
+        switch (D){
             case 'u':
-                this.Y = j+1;
-
+                Y = j;
+                X = i-1;
                 break;
             case 'd':
-                this.Y = j - 1;
-                if (this.Y < 0) this.Y=+1;
+                Y = j;
+                X = i+1;
                 break;
             case  'r':
-                this.X = i + 1;
+                X = i;
+                Y = j+1;
                 break;
             case 'l':
-                this.X = i - 1;
-                if (this.X < 0) this.X=+1;
+                X = i;
+                Y = j-1;
                 break;
             default:
-                this.X = i;
-                this.Y = j;
                 break;
         }
-
-
-        ;
+        MakeBoundariesValid();
         if(CheckIfPositionValid(i,j)){
+            //make the x and y coordinate valid if they are not
+            //System.out.println("New output::");
+            //System.out.printf("x: %d , y: %d%n", X,Y);
             Grid[X][Y] = Grid[i][j];
+            Grid[i][j] = new Nothing();
 
             //TODO: Do something with the attack variable
         }
         //TODO: if (attack)
-           // Grid[X][Y].setHP(1);
 
     }
     private boolean CheckIfPositionValid(int i,int j){
+        //TODO: Check coordinates and please make it work
+        boolean check = false;
         if(Grid[i][j].getType() == '@'){
             switch (Grid[X][Y].getType()){
-                case '*': return true;
-                case '.': return true;
-                case '@': return false;
+                case '*':
+                    check =true;
+                    break;
+                case '.':
+                    check =true;
+                    break;
+                case '@':
+                    check =false;
+                    break;
                 case '&':
                     attack = true;
-                    return true;
-                default: break;
-            }
-        }
-        else if (Grid[i][j].getType() == '&'){
-            switch (Grid[X][Y].getType()){
-                case '*':
-                    attack = true;
-                    return true;
-                case '.': return true;
-                case '@': return false;
-                case '&': return false;
+                    check = true;
+                    break;
                 default:
                     break;
-            }
-        }
-        return false;
+            }//end of switch
+        }//end of condition
+        else if (Grid[i][j].getType() == '&') {
 
+            switch (Grid[X][Y].getType()) {
+                case '*':
+                    attack = true;
+                    check = true;
+                    break;
+                case '.':
+                    check = true;
+                    break;
+                case '@':
+                    check = false;
+                    break;
+                case '&':
+                    check = false;
+                    break;
+                default:
+                    break;
+            }//end of switch
+        }//end of condition
 
+        return check;
+        }// end of method
 
+    private void MakeBoundariesValid(){
+        if(X < 0)
+            X+=1;
+        if(X > size-1)
+            X-=1;
+        if(Y < 0)
+            Y += 1;
+        if(Y > size-1)
+            Y -=1;
     }
 
     private int generateIndex(int bar){
         Random rando = new Random();
         return rando.nextInt(bar);
-    }
-    private void printRow(Entity[] row) {
-        for (Entity[] i : Grid) {
-            System.out.print(Arrays.toString(i));
-            System.out.print("\t");
-        }
-        System.out.println();
-    }
-
-    private void Display_Grid(){
-        for(Entity [] row : Grid) printRow(row);
     }
 
 }
