@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Random;
 
 /**
@@ -11,10 +12,12 @@ public class World {
     private int Y = 0;
     private boolean attack;
     private int size;
+    private int OnelifeCycle = 10;
 
     public World(int square_size){
         size = square_size;
-       Grid = new Entity[square_size][square_size];
+        Grid = new Entity[square_size][square_size];
+
        //TODO: Initialize each entity--[Done]
         MakeGridWithAnimals(square_size);
         FillGridWithPlants(square_size);
@@ -46,30 +49,92 @@ public class World {
 
     //public Entity DisplayEntityAtLocation(int x,int y){}
     public void Simulate(){
-        //TODO: This is where everthing will happen.
         int i;
         int j;
-        for (i = 0; i < size ; i++) {
-            for (j = 0; j < size ; j++) {
-                //TODO: how will this work
-                //TODO: WHENEVER I MOVE I NEED TO REPLACE THE SPACE WITH NOTHING
-                if((Grid[i][j].getType() == '@') || (Grid[i][j].getType()== '&')){
+        int growRandomPlant = 0;
+        for (i = 0; i < size-1 ; i++) {
+            for (j = 0; j < size-1; j++) {
+                if((Grid[i][j].getType() == '&' || Grid[i][j].getType() == '@') && (X!=i && Y !=j))
+                {
+                    updateEntity(i,j);
                     move(i,j);
                 }
 
             }
-            System.out.println("outter thisplay");
-            display_Grid();
-            System.out.println("");
+            growRandomPlant+=1;
+            MakeRandomPlantsAppear(growRandomPlant);// random plan will only appear every 4 clocks
+            //growRandomPlant = 0;
         }
     }
+
+    public void RunLifeCycle(){
+        Simulate();
+        display_Grid();
+    }
+
+    private void MakeRandomPlantsAppear(int growRandomPlant) {
+
+        if(growRandomPlant % 8 == 0) {
+            int bound = size-1;
+            int i = generateIndex(bound);
+            int j = generateIndex(bound);
+            if(Grid[i][j].getType() == '.' )
+                Grid[i][j] = new plant();
+
+        }
+    }
+
+    private void updateEntity(int i, int j) {
+        CheckifLifeIsOver(i,j);
+        reproduceIfPossible(i,j);
+    }
+    private void CheckifLifeIsOver(int i, int j){
+        if(Grid[i][j].ShouldDie()){
+            Grid[i][j] = new Nothing();
+        }
+    }
+    private void reproduceIfPossible(int i,int j) {
+        if (Grid[i][j].getType() == '@') {
+
+            if (Grid[i][j].getAge() >= 8 && Grid[i][j].HP >= 6) {// reproduce after 8 life cycles
+                int bornRigt = j + 1;
+                int bornLeft = j - 1;
+
+                if (isNothing(i, bornRigt))
+                    Grid[i][bornRigt] = new Herbivore();
+                else if (isNothing(i, bornLeft))
+                    Grid[i][bornLeft] = new Herbivore();
+            }
+
+        }
+        else if (Grid[i][j].getType() == '&'){
+
+            if (Grid[i][j].getAge() >= 8) {// reproduce after 8 life cycles
+                int bornRigt = j + 1;
+                int bornLeft = j - 1;
+
+                if (isNothing(i, bornRigt))//If reproduce to the Right if possible
+                    Grid[i][bornRigt] = new Cornivore();
+                else if (isNothing(i, bornLeft))// Reproduce to the Left is possible
+                    Grid[i][bornLeft] = new Cornivore();
+            }
+
+        }
+    }
+    private boolean isNothing(int i, int j){
+        if(Grid[i][j].getType() == '.')
+            return true;
+        return false;
+    }
+
+
 
     public void display_Grid(){
         //display_Grid();
 
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < size-1 ; i++) {
             System.out.print("[ ");
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < size-1; j++) {
 
                 System.out.print(Grid[i][j].getType());
                 System.out.print(" ");
@@ -84,14 +149,10 @@ public class World {
     }//Display a snapshot of the Grid
     private char Direction(){
         char [] possible_moves = {'u','d','r','l'};
-        return possible_moves[generateIndex(size-1)];
+        return possible_moves[generateIndex(4)];
     }
     public void move(int i, int j){
-        char D = Direction();
-        //System.out.println(D);
-        //System.out.printf("x: %d , y: %d%n", i,j);
-
-        switch (D){
+        switch (Direction()){
             case 'u':
                 Y = j;
                 X = i-1;
@@ -117,9 +178,25 @@ public class World {
             //System.out.println("New output::");
             //System.out.printf("x: %d , y: %d%n", X,Y);
             Grid[X][Y] = Grid[i][j];
-            Grid[i][j] = new Nothing();
+            Grid[X][Y].GrowOlder();
+            //System.out.println();
+            if(attack && Grid[X][Y].HP < 6) {
+                //System.out.println("Increasing HP");
+                Grid[X][Y].IncreaseHP();//will Increase Hp if it sees food
+            }
 
-            //TODO: Do something with the attack variable
+           //System.out.print("new Entity: ");
+           //System.out.println(Grid[X][Y]);
+           //System.out.printf(" at(%d,%d)%n ",X ,Y );
+           //System.out.print("Old Entity: ");
+           //System.out.println(Grid[i][j]);
+           Grid[i][j] = new Nothing();
+
+            //System.out.println("after Swap");
+            //System.out.printf("Entity: %s at position:(%d,%d)%n",Grid[i][j],i,j);
+
+
+
         }
         //TODO: if (attack)
 
@@ -131,18 +208,19 @@ public class World {
             switch (Grid[X][Y].getType()){
                 case '*':
                     check =true;
+                    attack = true;
                     break;
                 case '.':
                     check =true;
+                    attack = false;
                     break;
                 case '@':
                     check =false;
+                    attack = false;
                     break;
                 case '&':
-                    attack = true;
-                    check = true;
-                    break;
-                default:
+                    attack = false;
+                    check = false;
                     break;
             }//end of switch
         }//end of condition
@@ -150,19 +228,20 @@ public class World {
 
             switch (Grid[X][Y].getType()) {
                 case '*':
-                    attack = true;
+                    attack = false;
                     check = true;
                     break;
                 case '.':
                     check = true;
+                    attack = false;
                     break;
                 case '@':
-                    check = false;
+                    check = true;
+                    attack = true;
                     break;
                 case '&':
                     check = false;
-                    break;
-                default:
+                    attack = false;
                     break;
             }//end of switch
         }//end of condition
@@ -183,7 +262,7 @@ public class World {
 
     private int generateIndex(int bar){
         Random rando = new Random();
-        return rando.nextInt(bar);
+        return rando.nextInt(bar-1);
     }
 
 }

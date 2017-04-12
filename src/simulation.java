@@ -9,19 +9,26 @@ import java.util.Random;
 public class simulation {
     public static void main(String[] args) {
 
-    try
-    {
+        //try
+        //  {
 
-        World Earth = new World(5);
-        Earth.Simulate();
-    } catch (Exception as )
+        World Earth = new World(30);
+        System.out.println("...@&@&@&@&@&@& [Start Cycle] @&@&@&@&@&@@&....");
+        Earth.display_Grid();
+        for (int i = 0; i < 30; i++) {
+            System.out.println("Cycles: " + i);
+            Earth.RunLifeCycle();
 
-    {
-         System.out.println(as);
-    }
+            //  }
+            //} catch (Exception as )
 
-        //end of main function
+            // {
+            //System.out.println(as);
+            //}
 
+            //end of main function
+
+        }
     }
 
 

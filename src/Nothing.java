@@ -7,4 +7,11 @@ public class Nothing extends Entity{
         this.type = '.';
     }
 
+    @Override
+    public String toString(){
+        return ".";
+    }
+
+
+
 }

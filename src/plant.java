@@ -8,5 +8,11 @@ public class plant extends Entity{
         this.type = '*';
     }
 
+    @Override
+    public String toString(){
+        return "*";
+    }
+
+
 
 }
