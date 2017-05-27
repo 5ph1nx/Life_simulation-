@@ -12,4 +12,7 @@ public class Cornivore extends Entity {
         return "&";
     }
 
+
+
+
 }
