@@ -19,7 +19,8 @@ public class Connector {
             int i = 1;
             while (i <= GUI.getCycle()) {
                 Sim.RunLifeCycle();//make cylce simulate by 1
-
+                System.out.println("Cycle#: ");
+                Sim.display_Grid();
                 //This is where we want ot update the simulation
                 i++;
             }

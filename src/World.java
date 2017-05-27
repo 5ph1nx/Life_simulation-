@@ -68,9 +68,33 @@ public class World {
         }
     }
 
+
+    public void Simulate2(){
+        //One Cycle = 5 iterations
+        int i;
+        int j;
+        int growRandomPlant = 0;
+        for (i = 0; i < size-1; i++) {
+            for (j = 0; j < size-1; j++) {
+                if((getGrid()[i][j].getType() == '&' || getGrid()[i][j].getType() == '@') && (X!=i && Y !=j))
+                {
+                    updateEntity(i,j);
+                    getGrid()[i][j].move(getGrid(),size,i,j);//check speed and call the move function more than once
+                    //need to add an attribute called speed.
+                }
+
+            }
+            growRandomPlant+=1;
+            MakeRandomPlantsAppear(growRandomPlant);// random plan will only appear every 4 clocks
+            //growRandomPlant = 0;
+        }
+    }
+
+
+
     public void RunLifeCycle(){
         Simulate();
-        display_Grid();
+        //display_Grid();
     }
 
     private void MakeRandomPlantsAppear(int growRandomPlant) {

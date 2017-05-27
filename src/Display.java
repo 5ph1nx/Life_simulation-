@@ -22,14 +22,14 @@ public class Display extends JFrame {
     ImageIcon Herb= new ImageIcon(this.getClass().getResource("H.png"));
 
    public Display(){
-       GridLevelPanel = new JPanel[10][10];
-       LevelOnePanel.setLayout(new GridLayout(10, 10));
+       GridLevelPanel = new JPanel[5][5];
+       LevelOnePanel.setLayout(new GridLayout(5, 5));
        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       this.setSize(700,600);
+       this.setSize(500,400);
        //this can be wrapped in a function(
        int i,j;
-       for(i = 0; i<10; i++){
-           for(j = 0; j< 10; j++){
+       for(i = 0; i<5; i++){
+           for(j = 0; j< 5; j++){
                GridLevelPanel[i][j] = new JPanel();
                GridLevelPanel[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
                LevelOnePanel.add(GridLevelPanel[i][j]);
@@ -42,12 +42,12 @@ public class Display extends JFrame {
        LevelTwoPanel.add(LevelOnePanel);
        newScreenPanel.setLayout(new BoxLayout(newScreenPanel, BoxLayout.Y_AXIS));
        newScreenPanel.add(next);
-       newScreenPanel.add(Box.createRigidArea(new Dimension(0,10)));
+       newScreenPanel.add(Box.createRigidArea(new Dimension(0,5)));
        newScreenPanel.add(increaseCycle);
        newScreenPanel.add(perCycle);
-       newScreenPanel.add(Box.createRigidArea(new Dimension(0,10)));
+       newScreenPanel.add(Box.createRigidArea(new Dimension(0,5)));
        newScreenPanel.add(Labelcycle);
-       newScreenPanel.add(Box.createRigidArea(new Dimension(0,10)));
+       newScreenPanel.add(Box.createRigidArea(new Dimension(0,5)));
        newScreenPanel.add(ThisCycle);
        LevelTwoPanel.add(newScreenPanel);
        this.add(LevelTwoPanel);
@@ -103,8 +103,8 @@ public class Display extends JFrame {
      * This will refresh the Icons as we update through the cycle.
      */
     void refreshGui () {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
                 GridLevelPanel[i][j].removeAll();
                 GridLevelPanel[i][j].updateUI();
             }
