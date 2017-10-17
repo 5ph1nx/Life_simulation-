@@ -9,7 +9,7 @@ public class Connector {
 
     private World Sim;
     private Display GUI;
-
+    private Check;
 
     public Connector (World Sim, Display GUI) {
         this.GUI = GUI;
